@@ -135,7 +135,7 @@ def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefa
 
                 def testableConfig = buildType in ['debug', 'test']
 
-                def infoScript = 'bash jenkins/get_system_info.sh --${platform}'
+                def infoScript = "bash jenkins/get_system_info.sh --${platform}"
                 def buildFlag = buildType == "release" ? "" : (buildType == "debug" ? "--debug" : "--test-build")
                 def staticFlag = staticBuild ? "--static" : ""
                 def icuFlag = (platform == "osx" ? "--icu=/usr/local/opt/icu4c/include" : "")
