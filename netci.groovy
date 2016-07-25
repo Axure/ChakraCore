@@ -124,10 +124,8 @@ def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefa
             }
 
             staticBuildConfigs.each { staticBuild ->
-                def config = "linux_${buildType}"
-                if (platform == "osx") {
-                    config = "osx_${buildType}"
-                }
+                def config = (platform == "osx" ? "osx_buildtype" : "linux_${buildType}")
+                def numConcurrentCommand = (platform == "osx" ? "sysctl -n hw.logicalcpu" : "nproc")
                 
                 config = (configTag == null) ? config : "${configTag}_${config}"
                 config = staticBuild ? "${config}_static" : config
@@ -140,8 +138,9 @@ def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefa
                 def infoScript = 'bash jenkins/get_system_info.sh'
                 def buildFlag = buildType == "release" ? "" : (buildType == "debug" ? "--debug" : "--test-build")
                 def staticFlag = staticBuild ? "--static" : ""
+                def icuFlag = (platform == "osx" ? "--icu=/usr/local/opt/icu4c/include" : "")
                 def compilerPaths = (platform == "osx") ? "" : "--cxx=/usr/bin/clang++-3.8 --cc=/usr/bin/clang-3.8"
-                def buildScript = "bash ./build.sh ${staticFlag} -j=`nproc` ${buildFlag} ${compilerPaths}"
+                def buildScript = "bash ./build.sh ${staticFlag} -j=`${numConcurrentCommand}` ${buildFlag} ${compilerPaths}"
                 def testScript = "bash test/runtests.sh"
 
                 def newJob = job(jobName) {
