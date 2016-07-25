@@ -135,12 +135,12 @@ def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefa
 
                 def testableConfig = buildType in ['debug', 'test']
 
-                def infoScript = 'bash jenkins/get_system_info.sh'
+                def infoScript = 'bash jenkins/get_system_info.sh --${platform}'
                 def buildFlag = buildType == "release" ? "" : (buildType == "debug" ? "--debug" : "--test-build")
                 def staticFlag = staticBuild ? "--static" : ""
                 def icuFlag = (platform == "osx" ? "--icu=/usr/local/opt/icu4c/include" : "")
                 def compilerPaths = (platform == "osx") ? "" : "--cxx=/usr/bin/clang++-3.8 --cc=/usr/bin/clang-3.8"
-                def buildScript = "bash ./build.sh ${staticFlag} -j=`${numConcurrentCommand}` ${buildFlag} ${compilerPaths}"
+                def buildScript = "bash ./build.sh ${staticFlag} -j=`${numConcurrentCommand}` ${buildFlag} ${compilerPaths} ${icuFlag}"
                 def testScript = "bash test/runtests.sh"
 
                 def newJob = job(jobName) {
