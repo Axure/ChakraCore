@@ -124,7 +124,7 @@ def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefa
             }
 
             staticBuildConfigs.each { staticBuild ->
-                def config = (platform == "osx" ? "osx_buildtype" : "linux_${buildType}")
+                def config = (platform == "osx" ? "osx_${buildtype}" : "linux_${buildType}")
                 def numConcurrentCommand = (platform == "osx" ? "sysctl -n hw.logicalcpu" : "nproc")
                 
                 config = (configTag == null) ? config : "${configTag}_${config}"
