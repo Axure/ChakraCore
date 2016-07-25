@@ -114,6 +114,7 @@ def CreateBuildTasks = { machine, configTag, buildExtra, testExtra, runCodeAnaly
     }
 }
 
+// Generic task to trigger clang-based cross-plat build tasks
 def CreateXPlatBuildTasks = { machine, platform, configTag, xplatBranch, nonDefaultTaskSetup ->
     [true, false].each { isPR ->
         ['debug', 'test', 'release'].each { buildType ->
