@@ -20,25 +20,28 @@ echo
 echo "=================================================="
 echo
 
-if [[ $_PLATFORM =~ "linux "]]; then
+if [[ $_PLATFORM =~ "linux" ]]; then
     echo "Number of processors (nproc):"
     echo
     nproc
-else
+elif [[ $_PLATFORM =~ "osx" ]]; then
     echo "Number of processors (sysctl -n hw.logicalcpu):"
     echo
     sysctl -n hw.logicalcpu
+else
+    echo "Unknown platform"
+    exit 1
 fi
 
 echo
 echo "--------------------------------------------------"
 echo
 
-if [[ $_PLATFORM =~ "linux "]]; then
+if [[ $_PLATFORM =~ "linux" ]]; then
     echo "Linux version (lsb_release -a):"
     echo
     lsb_release -a
-else
+elif [[ $_PLATFORM =~ "osx" ]]; then
     echo "OS X version (sw_vers -productVersion):"
     echo
     sw_vers -productVersion
